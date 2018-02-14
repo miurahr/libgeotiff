@@ -191,7 +191,8 @@ IF(WITH_TIFF)
     IF(TIFF_FOUND)
         # Confirm required API is available
         INCLUDE(CheckFunctionExists)
-        SET(CMAKE_REQUIRED_LIBRARIES ${TIFF_LIBRARIES})
+        FIND_PACKAGE(LibLZMA)
+        SET(CMAKE_REQUIRED_LIBRARIES ${TIFF_LIBRARIES} ${ZLIB_LIBRARIES} ${JPEG_LIBRARIES} ${LIBLZMA_LIBRARIES})
 
         CHECK_FUNCTION_EXISTS(TIFFOpen HAVE_TIFFOPEN)
         IF(NOT HAVE_TIFFOPEN)
@@ -204,7 +205,7 @@ IF(WITH_TIFF)
             SET(TIFF_FOUND) # ReSET to NOT found for TIFF library
             MESSAGE(FATAL_ERROR "Failed to link with libtiff - TIFFMergeFieldInfo function not found. libtiff 3.6.0 Beta or later required. Please upgrade or use an older version of libgeotiff")
         ENDIF()
-
+        SET(CMAKE_REQUIRED_LIBRARIES)
         INCLUDE_DIRECTORIES(${TIFF_INCLUDE_DIR})
         ADD_DEFINITIONS(-DHAVE_TIFF=1)
     ENDIF(TIFF_FOUND)
