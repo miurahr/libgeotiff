@@ -357,8 +357,9 @@ INSTALL(FILES ${GEOTIFF_LIB_HEADERS} DESTINATION include)
 ###############################################################################
 # Build libxtiff library
 
-ADD_SUBDIRECTORY(libxtiff)
-
+SET(XTIFF_SOURCES libxtiff/xtiff.c)
+add_library(xtiff_obj ${XTIFF_SOURCES})
+target_include_directories(xtiff_obj ${CMAKE_CURRENT_SOURCE_DIR}/libxtiff)
 ###############################################################################
 # Build libgeotiff library
 
@@ -414,8 +415,6 @@ STRING(REPLACE ";" "\n" EPSG_INCLUDEFILE_POINTER_STRING "${epsg_includefile_poin
 FILE(WRITE "${CMAKE_CURRENT_BINARY_DIR}/epsg_incode_header.h"
     "/* ${EPSG_INCODE_EXPLANATION} */\n${epsg_includefile_externconst}; \n\n/* Pointers to csv data included in code */\nstatic const datafile_t files[] = {\n${EPSG_INCLUDEFILE_POINTER_STRING}\n  { NULL, NULL }};")
 
-SET(XTIFF_SOURCES libxtiff/xtiff.c)
-
 if (MSVC OR CMAKE_CONFIGURATION_TYPES)
   # For multi-config systems and for Visual Studio, the debug versions
   # of the libraries have a _d suffix.
@@ -423,7 +422,7 @@ if (MSVC OR CMAKE_CONFIGURATION_TYPES)
 endif ()
 
 ADD_LIBRARY(${GEOTIFF_LIBRARY_TARGET}
-    ${GEOTIFF_LIB_SOURCES} ${GEOTIFF_LIB_CSV_SOURCES} ${XTIFF_SOURCES})
+    ${GEOTIFF_LIB_SOURCES} ${GEOTIFF_LIB_CSV_SOURCES} xtiff_obj)
 
 # Unix, linux:
 IF(UNIX)
