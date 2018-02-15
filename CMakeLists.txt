@@ -5,14 +5,15 @@
 # Author: Mateusz Loskot <mateusz@loskot.net>
 #
 ###############################################################################
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1.0)
 PROJECT(GeoTIFF)
 
 SET(GEOTIFF_LIB_NAME geotiff)
 SET(GEOTIFF_LIBRARY_TARGET geotiff_library)
+option(BUILD_SHARE_LIBS "Set ON to build shared library." ON)
 
 ##############################################################################
 # CMake settings
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
 SET(CMAKE_COLOR_MAKEFILE ON)
 
